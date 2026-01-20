@@ -11,7 +11,7 @@ tags: ["thm","sqli","web","python"]
 ## 📌 Challenge Info
 
 - **CTF Name:** Biblioteca
-- **Url**: https://tryhackme.com/room/biblioteca
+- **Url**: [https://tryhackme.com/room/biblioteca](https://tryhackme.com/room/biblioteca)
 - **Category:** Web
 - **Points:** 60
 - **Difficulty:** Medium
@@ -161,4 +161,4 @@ Get the flag!
 
 ---
 ## 📚 References
-- https://medium.com/analytics-vidhya/python-library-hijacking-on-linux-with-examples-a31e6a9860c8
+- [https://medium.com/analytics-vidhya/python-library-hijacking-on-linux-with-examples-a31e6a9860c8](https://medium.com/analytics-vidhya/python-library-hijacking-on-linux-with-examples-a31e6a9860c8)
