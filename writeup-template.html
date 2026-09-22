@@ -1,0 +1,99 @@
+<blockquote>
+  <p class="prompt-info"><strong>Room:</strong> [<ROOM_NAME>](https://tryhackme.com/room/<ROOM_URL>)  
+**Difficulty:** &lt;Easy|Medium|Hard&gt; | **Points:** <POINTS></POINTS></ROOM_URL></ROOM_NAME></p>
+</blockquote>
+
+<h2 id="description">Description</h2>
+
+<ROOM_DESCRIPTION>
+
+---
+
+## Enumeration
+
+### Port Scanning
+
+```bash
+nmap -sCV --min-rate=1500 -p- <TARGET_IP>
+```
+
+{: .nolineno }
+
+&gt; **Results:**
+&gt;
+&gt; - <PORT>/tcp → <SERVICE> (<VERSION>)
+&gt; - <PORT>/tcp → <SERVICE> (<VERSION>)
+&gt;   {: .prompt-tip }
+
+### Service Analysis
+
+<ANALYSIS_DESCRIPTION>
+
+![Service Analysis](/assets/img/posts/YYYY-MM-DD-thm-ROOM-writeup/filename.webp){: .shadow }
+
+---
+
+## Initial Foothold
+
+### <METHOD_NAME>
+
+<EXPLANATION>
+
+&gt; **Key insight:** <IMPORTANT_INFO>
+&gt; {: .prompt-warning }
+
+```bash
+<command />
+```
+
+{: .nolineno }
+
+&gt; **Result:** <RESULT>
+&gt; {: .prompt-success }
+
+![Step Screenshot](/assets/img/posts/YYYY-MM-DD-thm-ROOM-writeup/filename.webp){: .shadow }
+
+---
+
+## Privilege Escalation
+
+### <METHOD_NAME>
+
+<EXPLANATION>
+
+```bash
+<command />
+```
+
+{: .nolineno }
+
+&gt; **Result:** <RESULT>
+&gt; {: .prompt-success }
+
+![Privesc Screenshot](/assets/img/posts/YYYY-MM-DD-thm-ROOM-writeup/filename.webp){: .shadow }
+
+---
+
+## Lessons Learned
+
+- <LESSON_1>
+- <LESSON_2>
+- <LESSON_3>
+
+---
+
+## Tools Used
+
+- **<TOOL1>** - <PURPOSE>
+- **<TOOL2>** - <PURPOSE>
+- **<TOOL3>** - <PURPOSE>
+
+---
+
+## References
+
+- [Reference 1](URL)
+- [Reference 2](URL)
+- [Reference 3](URL)
+
+</PURPOSE></TOOL3></PURPOSE></TOOL2></PURPOSE></TOOL1></LESSON_3></LESSON_2></LESSON_1></RESULT></EXPLANATION></METHOD_NAME></RESULT></IMPORTANT_INFO></EXPLANATION></METHOD_NAME></ANALYSIS_DESCRIPTION></VERSION></SERVICE></PORT></VERSION></SERVICE></PORT></TARGET_IP></ROOM_DESCRIPTION>

@@ -1,0 +1,65 @@
+# Blog Migration Guide
+
+## Migrating an article from Medium/other source to Chirpy Jekyll
+
+### 1. Fetch article from archive
+- Use archive.is to preserve the article: https://archive.is
+- Get the article URL and create an archive (e.g., https://archive.is/sKFcs)
+
+### 2. Convert images to WebP
+- Download all images from the archive
+- Convert to WebP using: `cwebp -q 80 input.png -o output.webp`
+
+### 3. Create images directory
+```bash
+mkdir -p assets/img/posts/YYYY-MM-DD-post-title-slug/
+```
+
+### 4. Create the post file
+- Filename format: `YYYY-MM-DD-post-title-slug.md`
+- Location: `_posts/`
+
+### 5. Front matter template
+```yaml
+---
+layout: post
+title: Post Title
+date: YYYY-MM-DD HH:MM:SS -0400
+categories: [Category]
+tags: [tag1, tag2]
+excerpt: Short description for SEO.
+image:
+  path: /assets/img/posts/YYYY-MM-DD-post-title-slug/image.webp
+  alt: Image description
+---
+```
+
+### 6. Image syntax (Chirpy style)
+```markdown
+![Description](/assets/img/posts/YYYY-MM-DD-post-title-slug/image.webp){: w="700" h="400"}
+```
+
+### 7. Build and test
+```bash
+bundle exec jekyll serve
+```
+
+### 8. Fix duplicate file conflicts
+If you get "The following destination is shared by multiple files":
+- Edit `_config.yml`
+- Add the conflicting file to `exclude:` list
+
+### 9. Push to git
+```bash
+git add _config.yml "_posts/YYYY-MM-DD-post-title-slug.md" "assets/img/posts/YYYY-MM-DD-post-title-slug/"
+git commit -m "add: migrate article title"
+git push origin dev
+```
+
+### 10. Merge to main
+```bash
+git checkout main
+git pull origin main
+git merge dev
+git push origin main
+```
