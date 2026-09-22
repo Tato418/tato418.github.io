@@ -3,7 +3,8 @@
 ## Overview
 
 This is a Jekyll blog using the **Chirpy** theme (`jekyll-theme-chirpy ~> 7.5`, installed 7.5.0),
-deployed to GitHub Pages. Site identity lives in `_config.yml`:
+deployed to Cloudflare Pages (primary, `tatos.net`) **and** mirrored to a GitHub Pages backup
+(`tato418.github.io`). Site identity lives in `_config.yml`:
 
 - **Title:** Escape from Shell
 - **Tagline:** Breaking out. One shell at a time.
@@ -199,12 +200,43 @@ Plugins: `jekyll-theme-chirpy`, `html-proofer`, `jekyll-compose`, `jemoji`.
 
 ## Deployment
 
-Deploys via **Cloudflare Pages** on push to the `main` branch (connected directly to
-this repo; CF Pages runs the Jekyll build). The old GitHub-Actions Pages workflow
-(`.github/workflows/pages-deploy.yml`) was removed in `d48c741` (Mar 2026) — don't
-rely on GitHub Pages. Note: pushes only trigger CF Pages if the project's production
-branch is `main` and auto-deploys are on; verify in the Cloudflare Pages dashboard if
-a push doesn't go live.
+The site is deployed to **two** hosts, both triggered by a push to `main`:
+
+### 1. Primary — Cloudflare Pages (`tatos.net`)
+Deploys via **Cloudflare Pages** on push to `main` (project connected directly to this
+repo; CF Pages runs the Jekyll build). Pushes only trigger the build if the project's
+production branch is `main` and auto-deploys are on; verify in the Cloudflare Pages
+dashboard if a push doesn't go live. The stale `.github/workflows/pages-deploy.yml`
+was removed in `d48c741` (Mar 2026).
+
+### 2. Backup mirror — GitHub Pages (`tato418.github.io`)
+Since 2026-09-22 the built site is ALSO mirrored to GitHub Pages at
+`https://tato418.github.io/` (repo `Tato418/tato418.github.io`) as a backup of
+tatos.net. `.github/workflows/gh-pages-mirror.yml` runs on push to `main` (same
+trigger as CF Pages).
+
+- **We deliberately do NOT use GitHub's built-in Pages builder** — it compiles with
+  `--safe`, which silently ignores `_plugins/` (e.g. `posts-lastmod-hook.rb`, which
+  bakes git-history `last_modified_at`) and would diverge from the CF build. Instead
+  the mirror workflow runs its **own** `bundle exec jekyll build` (plugins enabled,
+  `fetch-depth: 0` for git history, dest `_site_mirror`) and pushes the static
+  artifact to the mirror repo's `main` via `peaceiris/actions-gh-pages` with
+  `enable_jekyll: false` — CRITICAL: false (the default) makes the action write an
+  EMPTY `.nojekyll` at the repo root, which tells GitHub's built-in
+  `pages-build-deployment` to serve the static artifact and SKIP its own Jekyll run.
+  Setting it `true` is inverted: GitHub then re-runs Jekyll in `--safe` mode, which
+  fails on theme includes (e.g. `embed/youtube.html`) — that was the actual failure
+  on the tato418.github.io mirror. If `.nojekyll` is ever absent from the mirror repo
+  root, the mirror breaks exactly that way.
+- **Credential:** requires repo secret `GH_PAGES_DEPLOY_KEY` — the private half of a
+  write-scoped deploy key created on `Tato418/tato418.github.io`; the action needs
+  push on that repo.
+- **Config:** `url` stays `https://tatos.net`, `baseurl` empty → the mirror's
+  canonical/sitemap keep pointing at the primary, so it won't compete for SEO; both
+  sites serve at root.
+
+**Do not treat the deploy as "CF only"** — a push to `main` runs BOTH. After a push,
+check the GitHub Pages mirror as well as the live CF site.
 
 ## Newsletter — Buttondown (subscribe card + new-post automation)
 
@@ -259,6 +291,7 @@ header / footer / accent color / CSS fields live in **Buttondown → Settings �
 | `_layouts/` | Custom `ctf.html` and `personal.html` card layouts |
 | `_config.yml` | Site configuration |
 | `.github/workflows/buttondown-draft.yml` | CI: new post → Buttondown draft email |
+| `.github/workflows/gh-pages-mirror.yml` | CI: push to `main` → mirror built site to GitHub Pages (`tato418.github.io`) |
 | `.github/scripts/buttondown_draft.py` | Builds + POSTs the Nord-styled draft email |
 | `.github/BUTTONDOWN_EMAIL_THEME.md` | Free-tier Buttondown header/footer/CSS snippets |
 | `assets/img/` | Images and assets |
